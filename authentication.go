@@ -56,7 +56,6 @@ func GenerateCookie(id int, password, salt string) string {
 	timestamp := time.Now().Format("2006-01-02")
 	hash := sha256.Sum256([]byte(fmt.Sprintf("%s%s%s%s", timestamp, salt, password, salt)))
 	theCookie := fmt.Sprintf("%d:%032x", int64(id), hash)
-	fmt.Println(theCookie)
 	return theCookie
 }
 
