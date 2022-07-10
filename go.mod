@@ -1,3 +1,3 @@
-module github.com/sharkpick/authentication.git
+module github.com/sharkpick/authentication
 
 go 1.18
