@@ -1,18 +1,9 @@
 # authentication
-a package for authentication in Go using sqlite3
 
 ## About:
-- authentication uses a sha256 hash and a salt to generate password hashes. salts are randomized strings, and and are appended/prepended to the password.
+package authentication is a simple way to handle authentication for any site. simply open your sqlite3 database and use it in the queries you send to the authentication functions. comes with sane defaults for a secure site, and a way to serve cookies if desired.
 
-- authentication offers a good way to make cookies that expire every day. the cookie is a combination of the user's ID and salt, as well as the date. this causes cookies to expire when the date changes, but also offers a really good way to present authentication information to the API. We use the userID presented to generate our own cookie string and check against that.
+## Usage:
+on first run (or every run) be sure to run GenerateUserTable so your users have a place to go. The rest should be pretty intuitive, use the appropriate function to perform the desired action. examples will eventually be included.
 
-## Requirements:
-Go (1.17+, but any version should work)
-sqlite3 - you'll also need to configure a table for Users
-
-## Notes:
-- the User struct should be reworked to match your schema, but will probably fit your use case (if it doesn't, let me know). It carries an Err with it, which we use for the password authentication section. The warnings in this section are intentionally vague to keep potential attackers from finding out anything useful. The errors can be put into a template as a warning for the login, or logged. However you want it.
-
-- the format in GenerateCookie can be changed, it's probably unnecessarily complex, but I do recommend leaving the userID in (although you don't need to). I see how it's a potential vulnerability to let an attacker know our UserID, but the hash in the cookie should be sufficiently complex to thwart attacks. The scheme here should be complex enough to thwart attacks even if an attacker somehow got our .db file.
-
-- use the Entry.Tries variable to lock out an account after n unsuccessful attempts. On unsuccessful attempts, IncrementTries. When a user successfully logs in, ResetTries(). 
+the most interesting part (in my opinion) is the PasswordScheme interface that can be used with the global PasswordSaltingScheme variable in the authentication package to write your own authentication methods. all of the relevant parts of the formatting of your password/salt can be managed from this struct, the rest of the functions just use the strings that it produces. 
