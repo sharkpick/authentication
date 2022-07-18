@@ -18,10 +18,11 @@ func DeleteCookies(w http.ResponseWriter, CookieName string) {
 func SetCookies(w http.ResponseWriter, user User, CookieName string) {
 	cookieVal := GenerateCookie(user.ID, user.Password, user.Salt)
 	cookie := &http.Cookie{
-		Name:    CookieName,
-		Value:   cookieVal,
-		Path:    "/",
-		Expires: time.Now().Add(time.Hour * 24),
+		Name:     CookieName,
+		Value:    cookieVal,
+		Path:     "/",
+		Expires:  time.Now().Add(time.Hour * 24),
+		SameSite: http.SameSiteStrictMode,
 	}
 	http.SetCookie(w, cookie)
 }
