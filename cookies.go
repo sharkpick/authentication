@@ -5,24 +5,31 @@ import (
 	"time"
 )
 
+var (
+	CookiesSameSiteMode = http.SameSiteStrictMode
+	CookiesExpireTime   = time.Hour * 24
+	CookiesPath         = "/"
+	CookieName          = "usercookies"
+)
+
 func DeleteCookies(w http.ResponseWriter, CookieName string) {
 	cookie := &http.Cookie{
 		Name:    CookieName,
 		Value:   "",
-		Path:    "/",
-		Expires: time.Now().Add(-(time.Hour * 24)),
+		Path:    CookiesPath,
+		Expires: time.Now().Add(-CookiesExpireTime),
 	}
 	http.SetCookie(w, cookie)
 }
 
-func SetCookies(w http.ResponseWriter, user User, CookieName string) {
+func SetCookies(w http.ResponseWriter, user User) {
 	cookieVal := GenerateCookie(user.ID, user.Password, user.Salt)
 	cookie := &http.Cookie{
 		Name:     CookieName,
 		Value:    cookieVal,
-		Path:     "/",
-		Expires:  time.Now().Add(time.Hour * 24),
-		SameSite: http.SameSiteStrictMode,
+		Path:     CookiesPath,
+		Expires:  time.Now().Add(CookiesExpireTime),
+		SameSite: CookiesSameSiteMode,
 	}
 	http.SetCookie(w, cookie)
 }

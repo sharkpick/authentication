@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+// GenerateUserTable generates the default user table in the
+// database. The table is necessary for proper functioning of
+// this package.
 func GenerateUserTable(db *sql.DB) error {
 	sql_string := `CREATE TABLE IF NOT EXISTS "` + UsersTable + `"(
 	"id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
